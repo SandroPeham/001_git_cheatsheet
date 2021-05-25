@@ -1,0 +1,228 @@
+
+\documentclass[12pt, twoside]{article}
+
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+%	linkcolor=blue,
+%	filecolor=red,      
+	urlcolor=blue,
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+\begin{document}
+	\section{Using git source control}
+	
+	The following chapter will show you the basic usage of git via e.g. the terminal on Ubuntu. On Windows the console emulator \href{https://cmder.net/}{\textit{cmder}}. The \href{https://www.youtube.com/playlist?list=PL4cUxeGkcC9goXbgTDQ0n_4TBzOO0ocPR}{Git \& GitHub Tutorial for Beginners} by \textit{The Net Ninja} on Youtube is recommended.
+	
+	\subsection{Git Version}
+	
+	Using \verb|git --version| shows the installed git version.
+	
+	
+	
+	\subsection{Configuration}
+	
+	To show the user name and the email address use
+	\begin{verbatim}
+		git config user.name
+		git config user.email
+	\end{verbatim}
+	You can edit these values via
+	\begin{verbatim}
+		git config --global user.name <a username>
+		git config --global user.email <an email>
+	\end{verbatim}
+	
+	
+	\subsection{Git Repositories}
+	
+	There are basically two ways to create a git repository (repo):
+	\begin{itemize}
+		\item initialize a new repo
+		\item clone an existing repo
+	\end{itemize}
+
+	The command 
+	\begin{verbatim}
+		git status
+	\end{verbatim}
+	shows information of the active branch, e.g. untracked or edited files or files in staging area.
+
+	\subsubsection{Initialize a repo locally}
+	
+	Open the desired folder, which should represent the repo, in the terminal.
+	\begin{verbatim}
+		git init
+	\end{verbatim}
+	creates a repository in the current directory. The folder \verb|.git|, containing all source control information, will be created\footnote{Files and folders starting with a dot may be hidden in the file manager (or explorer on windows).}.
+	
+	\subsubsection{Adding files to staging area}
+	
+	Before a file or multiple files can be commited, they have to be added to the staging area. Using \verb|git add <a file>| adds a file to the staging area. Usually, you want to add all untracked files at once. 
+	\begin{verbatim}
+		git add .
+	\end{verbatim}
+	adds all untracked files to the staging area. Again, you can check the files inside the staging area using \verb|git status|. In rare cases a file has to be removed from the staging area. Use \verb|git rm <a file>| in this case.
+	
+	\subsubsection{Commiting files}
+	
+	\begin{verbatim}
+		git commit -m "<a comment>"
+	\end{verbatim}
+	commits files in staging area to active branch. Pay attention that the comment is enquoted.
+	
+	Using \verb|git log| lists information about all commits and branches. \verb|git log --online| is a condensd version of \verb|git log|, e.g. only one line per commit. After you entering one of this command the \textit{less} program may be executed, which shows the logs in a scrollable view. If you want to exit this program you have to hit \verb|q|.
+	
+	\subsubsection{Branches}
+	
+	Usually, if you are working on a project containing version control, you create a new \textit{branch} and edit, add or remove existing files inside this branch. After you a finished with the current task, the used branch gets merged into the main branch, mostly this branch is called the \textit{master} branch.
+	
+	\begin{verbatim}
+		git branch -a
+	\end{verbatim}
+	shows all branches.
+	
+	\begin{verbatim}
+		git branch <a branch>
+	\end{verbatim}
+	creates a new branch from the active branch (generelly from the master branch).
+	
+	\begin{verbatim}
+		git checkout <a branch>
+	\end{verbatim}
+	switches to another branch.
+	
+	\begin{verbatim}
+		git branch -d <a branch>
+	\end{verbatim}
+	deletes a branch locally, must not be active branch.
+	
+	\begin{verbatim}
+		git push origin --delete <a remote branch>
+	\end{verbatim}
+	deletes a remote branch.
+	
+	Using
+	\begin{verbatim}
+		git checkout -b <a branch>
+	\end{verbatim}
+	creates a new branch and immediatly switches to this new branch.
+	
+	\subsubsection{Merging Branches}
+	
+	You have to switch to a branch in which another branch should be merged, mostly the master branch.
+	
+	...
+	
+	\subsection{GitHub}
+	
+	As mentioned before there are two ways to create a git repo.
+	
+	\subsubsection{Push a local repo to GitHub}
+	
+	\begin{verbatim}
+		git push <an url> <a branch>
+	\end{verbatim}
+	pushes a branch to a remote repo. The url is an HTTPS link from GitHub. Before pushing a branch check if everthing is commit using \verb|git status|. Usually, we don't always want to type this address when we pull and push something from and to a remote repository. Therefore, an alias is set for this url using
+	
+	\begin{verbatim}
+		git remote add <an alias> <a url>
+	\end{verbatim}
+	An alias, often called \textit{origin}, is added to the local repo. This will be automatically done if the repo is cloned from GitHub. For example the alias is used like \verb|git push origin master|.
+	
+	\begin{verbatim}
+		git remote -v
+	\end{verbatim}
+	lists all aliases.
+	
+	\subsubsection{Clone a repo}
+	
+	\begin{verbatim}
+		git clone <an url>
+	\end{verbatim}
+	clones the repository from e.g. GitHub into the current directory.
+	
+	\subsubsection{Pull a repo}
+	
+	If more then one person works on the same project containg a repo, you, always, want to be up to date of the remote repo before you make some changes to the project. For example, a coworker has pushed changes to the remote repo. You don't always have to clone the remote repo if someone has made a change. Using 
+	\begin{verbatim}
+		git pull origin master
+	\end{verbatim}
+	fetches the changes from the remote repo.
+	
+	\subsection{Working in a group}
+	
+	\begin{enumerate}
+		\item \verb|git pull origin|, fetches changes from other users
+		\item create new branch from master, \verb|git checkout -b <a new branch>|
+		\item edit, add or remove files
+		\item stage \verb|git add .| and commit \verb|git commit -m "<a message>"|
+		\item push branch to GitHub, \verb|git push origin <the new branch>|
+		\item create a pull request for this new branch
+		\item users with permissions may merge the pull request
+		\item after the branch (pull request) is merged, the branch can be deleted
+	\end{enumerate}
+
+	\subsection{Others}
+	
+	\subsubsection{Stashing}
+	
+	If you have not finished all work in a branch and you want to checkout and work in another branch, DO NOT COMMIT UNFINISHED WORK! You can stash the unfinished work and switch to another branch. The stashed work can be finished later.
+	
+	\begin{verbatim}
+		git stash list
+	\end{verbatim}
+	lists all stashes
+	
+	\begin{verbatim}
+		git stash / git stash push
+	\end{verbatim}
+	moves stash on stack
+	
+	\begin{verbatim}
+		git stash apply
+	\end{verbatim}
+	get last pushed stash
+	
+	\begin{verbatim}
+		git stash pop
+	\end{verbatim}
+	pop last pushed stash
+	
+	\begin{verbatim}
+		git stash drop
+	\end{verbatim}
+	remove last pushed stash
+	
+	\subsubsection{Forking}
+	
+	used when to collaborate in an open source project which you don't own.
+	
+	...
+	
+	\subsubsection{Deleting branches}
+	
+	\begin{verbatim}
+		git branch | grep -v "master" | xargs git branch -D
+	\end{verbatim}
+	delets all branches except for the master branch.
+
+	
+	\section{Useful terminal commands}
+	
+	\begin{center}
+		\begin{tabular}{l|l}
+			\verb|cd| & change directory \\ \hline
+			\verb|ls| & lists all files and folders of current directory \\ \hline
+			\verb|mkdir| & make new directory \\ \hline
+			\verb|touch <a file>| & create a new file \\ \hline
+			\verb|atom <a file>| & opens a file via atom \\ \hline
+			\verb|rm <a file| & removes a file \\ \hline
+			\verb|rmdir <a dir>| & removes a directory
+		\end{tabular}
+	\end{center}
+	
+\end{document}
